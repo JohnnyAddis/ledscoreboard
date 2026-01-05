@@ -34,18 +34,19 @@ def grab_game():
 #2: live
 #3: final
 def derive_state(game):
-    status = game.get('gameStatus')
-    statusText = (game.get('gameStatusText') or '').lower()
+    status = game.get('status')
+    statusText = (game.get('statusText') or '').lower()
     clock = game.get('gameClock')
     period = game.get('period')
 
+    
     if status == 3:
         return 'FINAL'
 
     if 'half' in statusText:
         return 'HALFTIME'
 
-    if clock is not None and period is not None:
+    if status == 2 and period and period >= 1 and clock:
         return 'LIVE'
 
     return 'SCHEDULED'
